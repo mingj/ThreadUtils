@@ -3,13 +3,21 @@ package com.jeiao.thread;
 import com.jeiao.bean.OrderBean;
 import com.jeiao.common.MemoryCache;
 import com.jeiao.queue.OrderBeanQueue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.util.concurrent.CountDownLatch;
+
 
 /**
  * Created by zhangmingjie on 2017/9/3.
  */
 public class OrderBeanThread implements Runnable{
+
+    private static Logger logger = LogManager.getLogger();
+
+
 
     private String threadName;
 
@@ -31,12 +39,13 @@ public class OrderBeanThread implements Runnable{
             }
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            System.out.println(threadName);
+            logger.info(threadName);
+            logger.info(countDownLatch.getCount());
 
             String orderId = orderBean.getOrderId();
 
@@ -46,5 +55,6 @@ public class OrderBeanThread implements Runnable{
 
         }
         countDownLatch.countDown();
+        logger.info(countDownLatch.getCount());
     }
 }
