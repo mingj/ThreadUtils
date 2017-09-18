@@ -20,8 +20,9 @@ import java.util.concurrent.Executors;
 public class ThreadMain {
 
     private static Logger logger = LogManager.getLogger();
+    public static volatile int threadStatus = 0;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
 
 
         for (int i = 0; i < 300; i++) {
@@ -47,6 +48,10 @@ public class ThreadMain {
 
         countDownLatch.await();
         executorService.shutdown();
+
+        if (threadStatus > 0) {
+            throw new Exception("线程异常，程序异常退出！");
+        }
 
         logger.info("最后处理完成后的map数量："+MemoryCache.orderBeanMap.size());
 
